@@ -14,6 +14,15 @@ type ChatGPTConfig struct {
 	MaxTokens int
 }
 
+func NewChatGPTConfig(apikey string, endpoint string, model string, maxtokens int) ChatGPTConfig {
+	return ChatGPTConfig{
+		Apikey:    apikey,
+		Endpoint:  endpoint,
+		Model:     model,
+		MaxTokens: maxtokens,
+	}
+}
+
 func (config ChatGPTConfig) FromYaml(fileName string) ChatGPTConfig {
 	yamlFile, err := os.ReadFile(fileName)
 	if err != nil {

@@ -1,6 +1,3 @@
-/*
-Copyright © 2023 NAME HERE <EMAIL ADDRESS>
-*/
 package cmd
 
 import (
@@ -15,54 +12,74 @@ import (
 	"github.com/spf13/cobra"
 )
 
-const configFileName = "workoutConfig.yaml"
-const gptFileName = "gptConfig.yaml"
-
-var defaultWorkoutPlan = model.NewWorkoutPlan(3, "", "")
+var defaultWorkoutPlan = model.NewWorkoutPlan(3, "", "", "")
 
 var defaultBodyBuilder = model.NewBodyBuilder(20, 180, 75, "Male", defaultWorkoutPlan)
 
-// configCmd represents the config command
-var configCmd = &cobra.Command{
-	Use:   "config",
+const workoutFileName = "workoutConfig.yaml"
+
+var configworkoutCmd = &cobra.Command{
+	Use:   "cfgwkt",
 	Short: "Create a default workout config file or edit an existing one.",
 	Long:  `Create a default workout config file, or edit an existing one.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		isEdit, err := cmd.Flags().GetBool("edit")
-		isGPTConfig, err_ := cmd.Flags().GetBool("gpt")
-		if err != nil || err_ != nil {
+
+		if err != nil {
 			return
 		}
 
-		if isGPTConfig == true {
-			if utils.FileExists(gptFileName) {
-				log.Fatalf("GPT Config file already exists. Please remember to add your API Key by editing such file.")
-				return
-			} else {
-
-				utils.GenerateYamlFile(model.ChatGPTConfig{
-					Apikey:    "",
-					Endpoint:  "https://api.openai.com/v1/chat/completions",
-					Model:     "gpt-3.5-turbo",
-					MaxTokens: 300,
-				}, gptFileName)
-				return
-			}
-		}
-
-		if isEdit == true && utils.FileExists(configFileName) {
+		if isEdit == true && utils.FileExists(workoutFileName) {
 			fmt.Printf("Config file exists. Entering edit mode...")
-			generateYAMLFomUserInput(configFileName)
+			generateYAMLFomUserInput(workoutFileName)
 		} else if isEdit == false {
-			if !utils.FileExists(configFileName) {
-				utils.GenerateYamlFile(defaultBodyBuilder, configFileName)
+			if !utils.FileExists(workoutFileName) {
+				bodyBuilder := generateFromCommand(cmd)
+				if bodyBuilder != (model.BodyBuilder{}) {
+					utils.GenerateYamlFile(bodyBuilder, workoutFileName)
+				}
 			} else {
 				fmt.Printf("Your config file already exists. To modify it, please run 'gofit config -e' or 'gofit config --edit'")
 			}
 		} else {
-			fmt.Printf("Please generate a config file. Run 'gofit config' command.")
+			fmt.Printf("Please generate a config file. Run 'gofit configworkout' command.")
 		}
 	},
+}
+
+func generateFromCommand(cmd *cobra.Command) model.BodyBuilder {
+	age, errAG := cmd.Flags().GetInt("age")
+	height, errHG := cmd.Flags().GetInt("height")
+	weight, errWG := cmd.Flags().GetInt("weight")
+	gender, errGD := cmd.Flags().GetString("gender")
+	days, errDA := cmd.Flags().GetInt("days")
+	goal, errGL := cmd.Flags().GetString("goal")
+	wkType, errWT := cmd.Flags().GetString("type")
+	info, errAI := cmd.Flags().GetString("info")
+
+	if errAG != nil || errHG != nil || errWG != nil ||
+		errGD != nil || errDA != nil || errGL != nil ||
+		errWT != nil || errAI != nil {
+		log.Fatalf("Invalid or missing parameter. Please re-enter the command with valid input.")
+		return model.BodyBuilder{}
+	}
+
+	workoutPlan := model.WorkoutPlan{
+		Days:           days,
+		Goal:           goal,
+		WorkoutType:    wkType,
+		AdditionalInfo: info,
+	}
+
+	bodyBuilder := model.BodyBuilder{
+		Age:             age,
+		Height:          height,
+		Weight:          weight,
+		Gender:          gender,
+		TrainingDetails: workoutPlan,
+	}
+
+	return bodyBuilder
 }
 
 func generateYAMLFomUserInput(filename string) {
@@ -72,7 +89,7 @@ func generateYAMLFomUserInput(filename string) {
 		return
 	}
 	editStructFromUserInput(&bodyBuilder)
-	utils.GenerateYamlFile(bodyBuilder, configFileName)
+	utils.GenerateYamlFile(bodyBuilder, workoutFileName)
 }
 
 func editStructFromUserInput(bodyBuilder *model.BodyBuilder) {
@@ -112,14 +129,27 @@ func editStructFromUserInput(bodyBuilder *model.BodyBuilder) {
 	wkType := scanner.Text()
 	trainingDetails.SetWorkoutType(wkType)
 
+	fmt.Printf("Enter any additional information to be requested for your workout (current value %v): ", trainingDetails.GetAdditionalInfo())
+	scanner.Scan()
+	additionalInfo := scanner.Text()
+	trainingDetails.SetAdditionalInfo(additionalInfo)
+
 	bodyBuilder.SetTrainingDetails(trainingDetails)
 
 }
 
 func init() {
-	configCmd.Flags().BoolP("gpt", "g", false, "Generate ChatGPT Config file.")
-	configCmd.Flags().BoolP("edit", "e", false, "Edit existing config file.")
-	rootCmd.AddCommand(configCmd)
+	configworkoutCmd.Flags().IntP("age", "a", 20, "User Age.")
+	configworkoutCmd.Flags().IntP("height", "c", 170, "User height.")
+	configworkoutCmd.Flags().IntP("weight", "w", 70, "User weight.")
+	configworkoutCmd.Flags().StringP("gender", "g", "Male", "User gender.")
+	configworkoutCmd.Flags().IntP("days", "d", 3, "Days user will workout per week.")
+	configworkoutCmd.Flags().StringP("goal", "o", "", "User Goal.")
+	configworkoutCmd.Flags().StringP("type", "t", "cardio", "User workout type.")
+	configworkoutCmd.Flags().StringP("info", "i", "", "Additional information to be provided in message.")
+
+	configworkoutCmd.Flags().BoolP("edit", "e", false, "Edit existing config file.")
+	rootCmd.AddCommand(configworkoutCmd)
 
 	// Here you will define your flags and configuration settings.
 
