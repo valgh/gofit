@@ -1,16 +1,18 @@
 package model
 
 type WorkoutPlan struct {
-	Days        int
-	Goal        string
-	WorkoutType string
+	Days           int
+	Goal           string
+	WorkoutType    string
+	AdditionalInfo string
 }
 
-func NewWorkoutPlan(days int, goal string, workoutType string) WorkoutPlan {
+func NewWorkoutPlan(days int, goal string, workoutType string, additionalInfo string) WorkoutPlan {
 	return WorkoutPlan{
-		Days:        days,
-		Goal:        goal,
-		WorkoutType: workoutType,
+		Days:           days,
+		Goal:           goal,
+		WorkoutType:    workoutType,
+		AdditionalInfo: additionalInfo,
 	}
 }
 
@@ -36,4 +38,12 @@ func (w WorkoutPlan) GetWorkoutType() string {
 
 func (w *WorkoutPlan) SetWorkoutType(workoutType string) {
 	w.WorkoutType = workoutType
+}
+
+func (w WorkoutPlan) GetAdditionalInfo() string {
+	return w.AdditionalInfo
+}
+
+func (w *WorkoutPlan) SetAdditionalInfo(additionalInfo string) {
+	w.AdditionalInfo = additionalInfo
 }
