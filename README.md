@@ -31,7 +31,7 @@ The **gptConfig.yaml** file can either be provided directly by the user or gener
 ```
 gofit cfggpt --apikey myapikey --endpoint https://api.openai.com/v1/chat/completions --model gpt-3.5-turbo --maxtokens 500
 ```
-[cfggpt](examples/configgpt.png)
+![cfggpt](examples/configgpt.png)
 
 The **gptConfig.yaml** file is a hard prerequisite for running **gofit**. **endpoint**, **model** and **maxtokens** parameters can be any of the ones documented [here](https://platform.openai.com/docs/guides/gpt). If the user wishes to edit this configuration file, he can either delete it and then re-generate it through the **cfggpt** command, or directly edit the file itself. Currently, the file must be store under the working directory of the **gofit** binary file, otherwise it won't be located.
 
@@ -57,7 +57,7 @@ It can be generated through the **cfgwkt** command as follows:
 gofit cfgwkt --age 18 --height 175 --weight 81 --gender Male --days 3 --goal "better shape" --type cardio --info "I want to work out for 45 minutes."
 ```
 
-[cfgwkt](examples/configworkout.png)
+![cfgwkt](examples/configworkout.png)
 
 There is also a **"--edit"** option  which, if the file has already been correctly generated, lets the user modify it through command line interactively.
 
@@ -75,7 +75,7 @@ If the user created a **workoutConfig.yaml** file, this can be done through the 
 ```
 gofit workout --fromconfig
 ```
-[workout](examples/workoutfromconfig.png)
+![workout](examples/workoutfromconfig.png)
 
 Otherwise, the user can also provide as input the workout details directly through command line, as follows:
 
