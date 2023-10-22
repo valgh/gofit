@@ -4,13 +4,20 @@
 
 **gofit**'s goal is that of helping the user requesting a workout plan to ChatGPT, by either leveraging a YAML config file for its workout, or by providing as input the user and training details.
 
+## Tools
+
+- Golang
+- [go-resty](https://github.com/go-resty/resty)
+- [Cobra](https://github.com/spf13/cobra)
+- [ChatGPT](https://chat.openai.com/)
+
 # ChatGPT Usage Warnings
 
 **WARNING**: **gofit** does not bill the user for its usage, but in order to request ChatGPT a workout plan, an APIKEY must be provided through 'gofit --cfggpt' command. The user musy have a valid ChatGPT account with billing details, and billing will be based upon the plan the user chooses on its own ChatGPT account. The **max number of tokens** parameter can be set in the ChatGPT config file to truncate ChatGPT reponses and limit the billing, as well as ChatGPT billing details, thresholds and limits which can be set in the account.
 
 See [here](https://platform.openai.com/docs/guides/gpt) for more information.
 
-**WARNING**: gofit does not retain user data, but all the data provided in config files or input to the 'workout' command will be used by ChatGPT according to its settings. 
+**WARNING**: gofit does not retain user data, but all the data provided in config files or input to the 'workout' command will be used by ChatGPT according to its settings.
 See [here](https://help.openai.com/en/articles/7730893-data-controls-faq) for more information.
 
 # Usage
@@ -31,6 +38,7 @@ The **gptConfig.yaml** file can either be provided directly by the user or gener
 ```
 gofit cfggpt --apikey myapikey --endpoint https://api.openai.com/v1/chat/completions --model gpt-3.5-turbo --maxtokens 500
 ```
+
 ![cfggpt](examples/configgpt.png)
 
 The **gptConfig.yaml** file is a hard prerequisite for running **gofit**. **endpoint**, **model** and **maxtokens** parameters can be any of the ones documented [here](https://platform.openai.com/docs/guides/gpt). If the user wishes to edit this configuration file, he can either delete it and then re-generate it through the **cfggpt** command, or directly edit the file itself. Currently, the file must be store under the working directory of the **gofit** binary file, otherwise it won't be located.
@@ -59,7 +67,7 @@ gofit cfgwkt --age 18 --height 175 --weight 81 --gender Male --days 3 --goal "be
 
 ![cfgwkt](examples/configworkout.png)
 
-There is also a **"--edit"** option  which, if the file has already been correctly generated, lets the user modify it through command line interactively.
+There is also a **"--edit"** option which, if the file has already been correctly generated, lets the user modify it through command line interactively.
 
 ```
 gofit cfgwkt --edit
@@ -69,12 +77,13 @@ The **workoutConfig.yaml** file must be placed at the same directory level of th
 
 ## Generating a workout plan
 
-Upon the creation of a correct **gptConfig.yaml** file,  the user may leverage the **workout** command in order to request a new workout plan from ChatGPT engine.
+Upon the creation of a correct **gptConfig.yaml** file, the user may leverage the **workout** command in order to request a new workout plan from ChatGPT engine.
 If the user created a **workoutConfig.yaml** file, this can be done through the execution of the following command:
 
 ```
 gofit workout --fromconfig
 ```
+
 ![workout](examples/workoutfromconfig.png)
 
 Otherwise, the user can also provide as input the workout details directly through command line, as follows:
