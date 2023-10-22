@@ -4,6 +4,8 @@
 
 **gofit**'s goal is that of helping the user requesting a workout plan to ChatGPT, by either leveraging a YAML config file for its workout, or by providing as input the user and training details.
 
+# ChatGPT Usage Warnings
+
 **WARNING**: **gofit** does not bill the user for its usage, but in order to request ChatGPT a workout plan, an APIKEY must be provided through 'gofit --cfggpt' command. The user musy have a valid ChatGPT account with billing details, and billing will be based upon the plan the user chooses on its own ChatGPT account. The **max number of tokens** parameter can be set in the ChatGPT config file to truncate ChatGPT reponses and limit the billing, as well as ChatGPT billing details, thresholds and limits which can be set in the account.
 
 See [here](https://platform.openai.com/docs/guides/gpt) for more information.
