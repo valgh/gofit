@@ -8,13 +8,30 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-func GenerateYamlFile(data interface{}, fileName string) {
+func UnmarshalYAML(yamlFile []byte, data interface{}) error {
+	err_yaml := yaml.Unmarshal(yamlFile, data)
+	return err_yaml
+}
+
+func marshalYAML(data interface{}) ([]byte, error) {
 	yamlData, err_yaml := yaml.Marshal(data)
 
 	if err_yaml != nil {
 		log.Fatalf("Error while marshaling object into YAML file: %v", err_yaml)
+	}
+	return yamlData, err_yaml
+}
+
+func GenerateYamlFile(data interface{}, fileName string) {
+
+	yamlData, err := marshalYAML(data)
+
+	if err != nil {
 		return
 	}
+
+	fmt.Println("\n\n=========== YAML generated ==========")
+	fmt.Println(string(yamlData))
 
 	yamlFile, err_file := os.Create(fileName)
 
@@ -22,9 +39,6 @@ func GenerateYamlFile(data interface{}, fileName string) {
 		log.Fatalf("Error while creating the config file: %v", err_file)
 		return
 	}
-
-	fmt.Println("\n\n=========== YAML generated ==========")
-	fmt.Println(string(yamlData))
 
 	_, err_write := yamlFile.Write(yamlData)
 

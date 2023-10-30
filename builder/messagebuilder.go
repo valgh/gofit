@@ -2,18 +2,17 @@ package builder
 
 import (
 	"gofit/model"
+	"gofit/utils"
 	"log"
 	"os"
 	"strconv"
 	"strings"
-
-	"gopkg.in/yaml.v2"
 )
 
 var message = `Hello ChatGPT! Can you please give me a workout plan?
 I'm a XXX years-old XXX, my height is XXX cm and my weight is XXX kg.
 I want to work out XXX times a week.
-My goal is XXX and I would like a workout type XXX. XXX`
+My goal is XXX and I would like a workout type XXX. Some additional information: XXX`
 
 const configFile = "workoutConfig.yaml"
 const PLACEHOLDER = "XXX"
@@ -26,7 +25,7 @@ func BuildMessageFromFile(filename string) string {
 
 	var bodyBuilder model.BodyBuilder
 
-	err_yaml := yaml.Unmarshal(yamlFile, &bodyBuilder)
+	err_yaml := utils.UnmarshalYAML(yamlFile, &bodyBuilder)
 	if err_yaml != nil {
 		log.Fatalf("Error while unmarshaling "+filename+" file: %v", err_yaml)
 	}

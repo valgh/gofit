@@ -1,0 +1,9 @@
+age: 14
+height: 157
+weight: 54
+gender: Male
+trainingdetails:
+  days: 3
+  goal: gain muscle
+  workouttype: strength
+  additionalinfo: Train for 45 minutes
