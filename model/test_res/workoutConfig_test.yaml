@@ -1,0 +1,9 @@
+age: 20
+height: 180
+weight: 80
+gender: Male
+trainingdetails:
+  days: 3
+  goal: better shape
+  workouttype: cardio
+  additionalinfo: I want to exercise 60 minutes each day
