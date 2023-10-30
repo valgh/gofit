@@ -94,6 +94,7 @@ gofit workout --age 18 --height 175 --weight 81 --gender Male --days 3 --goal "b
 
 # What's next
 
-- Unit tests;
-- Better exception Handling;
+- Unit tests: need more of them, alsdo to test exceptions and borderline use cases;
+- Better exception handling;
+- Desired feature: provide config files path by input, so they do not need to be stored at the same level of the gofit binary;
 - ChatGPT response parser/outputfile (.pdf) with workout plan, workout plan editor;
